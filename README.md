@@ -24,21 +24,21 @@ In your composer.json add the following in the **require** section:
 ```
 
 And then:
-```
+```sh
 php composer.phar update
 ```
 or if you have installed composer in your system to be called directly without php then:
-```
+```sh
 composer update
 ```
 
 ## Tutorial
 ### 1. Use Worker
-```
+```php
 Use Worker\Worker
 ```
 ### 2. Using Anonymous Function
-```
+```php
 $worker = new Worker(
     // Here you can provide your main callback
     function($arg1 = '', $arg2 = '') {
@@ -59,7 +59,7 @@ $worker->start('first arg', 'second arg');
 ```
 
 ### 3. Using Class Object Method
-```
+```php
 class SomeClass
 {
     public function method($arg1, $arg2, $arg3)
@@ -69,7 +69,7 @@ class SomeClass
 };
 ```
 And then somewhere:
-```
+```php
 $object = new SomeClass();
 // Pass array, first item is the object and second item is the name of the class method
 $worker = new Worker([$object, 'method']);
@@ -77,7 +77,7 @@ $worker = new Worker([$object, 'method']);
 $worker->start('from', ' object method', ', this is nice');
 ```
 ### 4. Using Class Static Method
-```
+```php
 class SomeClass
 {
     public static function method($arg1, $arg2, $arg3)
@@ -87,7 +87,7 @@ class SomeClass
 };
 ```
 And somewhere:
-```
+```php
 $worker = new Worker(__NAMESPACE__ . '\SomeClass::method');
 $worker->start('from', ' class method', ', nice');
 ```
