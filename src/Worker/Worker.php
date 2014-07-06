@@ -6,7 +6,7 @@ namespace Worker;
  *
  * @category Worker
  * @package  Worker
- * @author   Arkan M. Gerges <arkanmgerges@gmail.com>
+ * @author   Arkan M. Gerges <arkan.m.gerges@gmail.com>
  * @version  GIT: $Id:$
  */
 class Worker
