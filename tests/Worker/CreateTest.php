@@ -11,6 +11,14 @@ class Temp
     }
 };
 
+class Temp2
+{
+    public static function method($arg1, $arg2)
+    {
+        file_put_contents(realpath(__DIR__ . '/../../tmp') . '/result.txt', $arg1 . $arg2);
+    }
+};
+
 class CreateTest extends BaseClass
 {
     public function tearDown()
@@ -18,7 +26,7 @@ class CreateTest extends BaseClass
         exec('rm -fr ' . realpath(__DIR__ . '/../../tmp'));
     }
 
-    public function testCallClosure()
+    public function testCallAnonymous()
     {
         $worker = new Worker(
             function($arg1 = '', $arg2 = '') {
@@ -32,9 +40,9 @@ class CreateTest extends BaseClass
             }
         );
 
-        $worker->start('from ', 'closure');
+        $worker->start('from', ' anonymous');
         sleep(2);
-        $this->assertEquals('from closure', file_get_contents($this->resultFile));
+        $this->assertEquals('from anonymous', file_get_contents($this->resultFile));
         if (file_exists($this->successFile)) {
             $this->assertEquals('success', file_get_contents($this->successFile));
         }
@@ -43,7 +51,7 @@ class CreateTest extends BaseClass
         }
     }
 
-    public function testCallClassMethod()
+    public function testCallObjectMethod()
     {
         $tmp = new Temp();
 
@@ -51,8 +59,19 @@ class CreateTest extends BaseClass
             [$tmp, 'method']
         );
 
-        $worker->start('from ', 'method');
+        $worker->start('from', ' method');
         sleep(2);
         $this->assertEquals('from method', file_get_contents($this->resultFile));
+    }
+
+    public function testCallClassMethod()
+    {
+        $worker = new Worker(
+            __NAMESPACE__ . '\Temp2::method'
+        );
+
+        $worker->start('from', ' class method');
+        sleep(2);
+        $this->assertEquals('from class method', file_get_contents($this->resultFile));
     }
 }
